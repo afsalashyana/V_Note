@@ -1,0 +1,10 @@
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:id="@+id/fullscreen_switch"
+        android:defaultValue="false"
+        android:key="full_screen_switch"
+        android:summary="Make V-Note Full Screen. Restart Application to take effect"
+        android:title="Full Screen Layout" />
+</PreferenceScreen>

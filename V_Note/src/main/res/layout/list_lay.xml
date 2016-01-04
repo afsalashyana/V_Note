@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/list_text_view"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:layout_marginRight="15dp"
+    android:background="#ffffff"
+    android:drawableRight="@drawable/ic_action_editor_mode_edit"
+    android:elevation="2dp"
+    android:ellipsize="end"
+    android:ems="16"
+    android:gravity="left|center"
+    android:orientation="horizontal"
+    android:paddingLeft="15dp"
+    android:singleLine="true"
+    android:text="Sample Text Here"
+    android:textColor="#0a0808"
+    android:textSize="16sp"></TextView>

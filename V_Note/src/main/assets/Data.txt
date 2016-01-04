@@ -1,0 +1,4 @@
+Android is always awesome. At first i felt like, Oh man ! There is so much to learn.
+But as i tried persistently to get familiar with it, everything became so easy.
+And Here i am finally, able to implement something to anything on android.
+Thank God !
