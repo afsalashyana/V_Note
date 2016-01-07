@@ -35,9 +35,9 @@ public class first_act extends AppCompatActivity implements ListView.OnItemClick
     long currentNote;
     ListView listHolder;
     ArrayAdapter adapter;
-    Map<String, String> noteMap;
-    List<String> noteListVals;
-    List<String> noteListKeys;
+
+    List noteObjects;
+
     noteHandlerDB dataHandeler;
 
     @Override
@@ -51,11 +51,9 @@ public class first_act extends AppCompatActivity implements ListView.OnItemClick
         listHolder = (ListView) findViewById(R.id.listView);
         listHolder.setOnItemClickListener(this);
 
-        noteMap = dataHandeler.getAllNotes();
-        noteListVals = new ArrayList<>(noteMap.values());
-        noteListKeys = new ArrayList<>(noteMap.keySet());
+        noteObjects = dataHandeler.getAllNotes();
 
-        adapter = new ArrayAdapter(getBaseContext(), R.layout.list_lay, noteListVals);
+        adapter = new ArrayAdapter(getBaseContext(), R.layout.list_lay, noteObjects);
         listHolder.setAdapter(adapter);
 
         registerForContextMenu(listHolder);
@@ -110,10 +108,7 @@ public class first_act extends AppCompatActivity implements ListView.OnItemClick
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        noteClass tempNote = new noteClass();
-        tempNote.setData(noteListVals.get(position));
-        tempNote.setKey(noteListKeys.get(position));
-
+        noteClass tempNote = (noteClass) noteObjects.get(position);
         Intent newIntent = new Intent(getBaseContext(), create_new_note.class);
         newIntent.putExtra(KEY, tempNote.getKey());
         newIntent.putExtra(DATA, tempNote.getData());
@@ -142,7 +137,7 @@ public class first_act extends AppCompatActivity implements ListView.OnItemClick
                     note = dataHandeler.getNewNoteObject();
                     note.setKey(key);
                     note.setData(value);
-                    dataHandeler.addNewNote(note);
+                    dataHandeler.insertUpdate(note);
                     Toast.makeText(this, "Note Updated", Toast.LENGTH_SHORT).show();
                     Refresh();
                     break;
@@ -153,12 +148,9 @@ public class first_act extends AppCompatActivity implements ListView.OnItemClick
     }
 
     private void Refresh() {
-        noteMap = dataHandeler.getAllNotes();
-        adapter = new ArrayAdapter(getBaseContext(), R.layout.list_lay, new ArrayList(noteMap.values()));
-        noteListKeys.clear();
-        noteListVals.clear();
-        noteListVals = new ArrayList<>(noteMap.values());
-        noteListKeys = new ArrayList<>(noteMap.keySet());
+        noteObjects.clear();
+        noteObjects = dataHandeler.getAllNotes();
+        adapter = new ArrayAdapter(getBaseContext(), R.layout.list_lay, noteObjects);
         listHolder.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
@@ -176,10 +168,9 @@ public class first_act extends AppCompatActivity implements ListView.OnItemClick
         switch (item.getItemId()) {
             case DELETE_ID:
                 int location = (int) currentNote;
-                Log.d("LOG", "Item to delete - KEY - " + noteListKeys.get(location) + " - VAL - " + noteListVals.get(location));
+                Log.d("LOG", "Item to delete -" + " - VAL - " + noteObjects.get(location));
                 noteClass deleteNote = new noteClass();
-                deleteNote.setData(noteListVals.get(location));
-                deleteNote.setKey(noteListKeys.get(location));
+                deleteNote = (noteClass) noteObjects.get(location);
                 dataHandeler.deleteNote(deleteNote);
                 Toast.makeText(getBaseContext(), "Note Deleted", Toast.LENGTH_SHORT).show();
                 Refresh();
@@ -188,7 +179,8 @@ public class first_act extends AppCompatActivity implements ListView.OnItemClick
                 location = (int) currentNote;
                 Intent share = new Intent(Intent.ACTION_SEND);
                 share.setType("text/plain");
-                share.putExtra(Intent.EXTRA_TEXT, noteListVals.get(location));
+                String data = noteObjects.get(location).toString();
+                share.putExtra(Intent.EXTRA_TEXT, data);
                 startActivity(Intent.createChooser(share, "Share Note With "));
         }
         return true;

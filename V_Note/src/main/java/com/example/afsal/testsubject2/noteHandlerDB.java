@@ -7,10 +7,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
-import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class noteHandlerDB {
 
@@ -23,31 +25,34 @@ public class noteHandlerDB {
         mydatabase = db;
         baseContext = context;
 
-        mydatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_NAME +" (ID VARCHAR PRIMARY KEY,DATA VARCHAR);");
+        mydatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (ID VARCHAR PRIMARY KEY,DATA VARCHAR);");
     }
 
     public void addNewNote(noteClass newNote) {
-        String command = "INSERT INTO "+ TABLE_NAME +" VALUES('" + newNote.getKey() + "', '" + newNote.getData() + "');";
+        String command = "INSERT INTO " + TABLE_NAME + " VALUES('" + newNote.getKey() + "', '" + newNote.getData() + "');";
         mydatabase.execSQL(command);
         Log.d("DB", "Command to insert data - " + command);
     }
 
     public void insertUpdate(noteClass newNote) {
-        String command = "UPDATE "+ TABLE_NAME +" SET DATA = '" + newNote.getData() + "' WHERE ID = '" + newNote.getKey() + "';";
+        String command = "UPDATE " + TABLE_NAME + " SET DATA = '" + newNote.getData() + "' WHERE ID = '" + newNote.getKey() + "';";
         mydatabase.execSQL(command);
         Log.d("DB", "Command to insert data - " + command);
     }
 
-    public Map<String, String> getAllNotes() {
-        Map<String, String> myMap = new HashMap<>();
-        Cursor ans = mydatabase.rawQuery("SELECT * FROM "+ TABLE_NAME , null);
+    public List<noteClass> getAllNotes() {
+        List<noteClass> myList = new ArrayList<noteClass>();
+        Cursor ans = mydatabase.rawQuery("SELECT * FROM " + TABLE_NAME, null);
         ans.moveToFirst();
         for (int i = 0; i < ans.getCount(); i++) {
-            Log.d("DB", ans.getString(0) + " ----- " + ans.getString(1));
-            myMap.put(ans.getString(0), ans.getString(1));
+            noteClass temp = new noteClass();
+            temp.setKey(ans.getString(0));
+            temp.setData(ans.getString(1));
+            Log.d("DB", "DATA --" + temp + "\n");
+            myList.add(temp);
             ans.moveToNext();
         }
-        return myMap;
+        return myList;
     }
 
     public noteClass getNewNoteObject() {
@@ -62,7 +67,7 @@ public class noteHandlerDB {
     }
 
     public void deleteNote(noteClass note) {
-        String command = "DELETE FROM "+ TABLE_NAME +" WHERE ID = '" + note.getKey() + "';";
+        String command = "DELETE FROM " + TABLE_NAME + " WHERE ID = '" + note.getKey() + "';";
         mydatabase.execSQL(command);
     }
 
