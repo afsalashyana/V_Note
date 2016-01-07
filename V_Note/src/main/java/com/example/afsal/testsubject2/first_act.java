@@ -2,6 +2,7 @@ package com.example.afsal.testsubject2;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
@@ -29,21 +30,24 @@ public class first_act extends AppCompatActivity implements ListView.OnItemClick
     public static final int SHARE_ID = 1011;
     public static final String DATA = "NOTE_DATA";
     public static final int UPDATE_NOTE = 101;
-
+    public static final String DATABASE_NAME = "V_NOTE";
+    SQLiteDatabase mydatabase;
     long currentNote;
     ListView listHolder;
     ArrayAdapter adapter;
     Map<String, String> noteMap;
     List<String> noteListVals;
     List<String> noteListKeys;
-    noteHandler dataHandeler;
+    noteHandlerDB dataHandeler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_act);
 
-        dataHandeler = new noteHandler(this);
+        mydatabase = openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE ,null);
+        dataHandeler = new noteHandlerDB(this,mydatabase);
+
         listHolder = (ListView) findViewById(R.id.listView);
         listHolder.setOnItemClickListener(this);
 

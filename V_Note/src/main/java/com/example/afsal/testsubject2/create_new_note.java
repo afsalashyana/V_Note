@@ -1,6 +1,7 @@
 package com.example.afsal.testsubject2;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -14,6 +15,7 @@ public class create_new_note extends AppCompatActivity {
     public static final String DATA_ID = "1001";
     public static final String KEY_ID = "1002";
     String key, dataVal;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

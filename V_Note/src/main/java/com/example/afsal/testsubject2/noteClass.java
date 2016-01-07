@@ -2,15 +2,15 @@ package com.example.afsal.testsubject2;
 
 
 public class noteClass {
-    String key;
+    String id;
     String data;
 
     public String getKey() {
-        return key;
+        return id;
     }
 
     public void setKey(String key) {
-        this.key = key;
+        this.id = key;
     }
 
     public String getData() {
