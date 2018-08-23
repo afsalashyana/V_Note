@@ -1,4 +1,4 @@
-package com.example.afsal.testsubject2;
+package com.example.afsal.notes.pref;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

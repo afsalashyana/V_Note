@@ -1,4 +1,4 @@
-package com.example.afsal.testsubject2;
+package com.example.afsal.notes.views;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,11 +17,16 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.afsal.notes.R;
+import com.example.afsal.notes.controller.NoteController;
+import com.example.afsal.notes.model.Note;
+import com.example.afsal.notes.pref.SettingsActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class first_act extends AppCompatActivity implements ListView.OnItemClickListener {
+public class MainActivity extends AppCompatActivity implements ListView.OnItemClickListener {
 
     public static final String KEY = "NOTE_KEY";
     public static final int NEW_NOTE = 100;
@@ -36,27 +41,27 @@ public class first_act extends AppCompatActivity implements ListView.OnItemClick
     Map<String, String> noteMap;
     List<String> noteListVals;
     List<String> noteListKeys;
-    noteHandler dataHandeler;
+    NoteController dataHandeler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_act);
 
-        dataHandeler = new noteHandler(this);
-        listHolder = (ListView) findViewById(R.id.listView);
+        dataHandeler = new NoteController(this);
+        listHolder = findViewById(R.id.listView);
         listHolder.setOnItemClickListener(this);
 
         noteMap = dataHandeler.getAllNotes();
         noteListVals = new ArrayList<>(noteMap.values());
         noteListKeys = new ArrayList<>(noteMap.keySet());
 
-        adapter = new ArrayAdapter(getBaseContext(), R.layout.list_lay, noteListVals);
+        adapter = new ArrayAdapter<>(getBaseContext(), R.layout.list_lay, noteListVals);
         listHolder.setAdapter(adapter);
 
         registerForContextMenu(listHolder);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,16 +94,16 @@ public class first_act extends AppCompatActivity implements ListView.OnItemClick
     }
 
     public void createNewNote() {
-        Intent newIntent = new Intent(getBaseContext(), create_new_note.class);
-        noteClass note = dataHandeler.getNewNoteObject();
+        Intent newIntent = new Intent(getBaseContext(), NewNote.class);
+        Note note = dataHandeler.getNewNoteObject();
         newIntent.putExtra(KEY, note.getKey());
         newIntent.putExtra(DATA, "");
         startActivityForResult(newIntent, NEW_NOTE);
     }
 
     public void createNewNote(String data) {
-        Intent newIntent = new Intent(getBaseContext(), create_new_note.class);
-        noteClass note = dataHandeler.getNewNoteObject();
+        Intent newIntent = new Intent(getBaseContext(), NewNote.class);
+        Note note = dataHandeler.getNewNoteObject();
         newIntent.putExtra(KEY, note.getKey());
         newIntent.putExtra(DATA, data);
         startActivityForResult(newIntent, NEW_NOTE);
@@ -106,11 +111,11 @@ public class first_act extends AppCompatActivity implements ListView.OnItemClick
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        noteClass tempNote = new noteClass();
+        Note tempNote = new Note();
         tempNote.setData(noteListVals.get(position));
         tempNote.setKey(noteListKeys.get(position));
 
-        Intent newIntent = new Intent(getBaseContext(), create_new_note.class);
+        Intent newIntent = new Intent(getBaseContext(), NewNote.class);
         newIntent.putExtra(KEY, tempNote.getKey());
         newIntent.putExtra(DATA, tempNote.getData());
         startActivityForResult(newIntent, UPDATE_NOTE);
@@ -121,10 +126,10 @@ public class first_act extends AppCompatActivity implements ListView.OnItemClick
         if (resultCode == RESULT_OK)
             switch (requestCode) {
                 case NEW_NOTE:
-                    String key = data.getStringExtra(create_new_note.KEY_ID);
-                    String value = data.getStringExtra(create_new_note.DATA_ID);
+                    String key = data.getStringExtra(NewNote.KEY_ID);
+                    String value = data.getStringExtra(NewNote.DATA_ID);
                     Log.d("LOG", "Back From NEW_NOTE Activity --- " + data);
-                    noteClass note = dataHandeler.getNewNoteObject();
+                    Note note = dataHandeler.getNewNoteObject();
                     note.setKey(key);
                     note.setData(value);
                     dataHandeler.addNewNote(note);
@@ -132,8 +137,8 @@ public class first_act extends AppCompatActivity implements ListView.OnItemClick
                     Refresh();
                     break;
                 case UPDATE_NOTE:
-                    key = data.getStringExtra(create_new_note.KEY_ID);
-                    value = data.getStringExtra(create_new_note.DATA_ID);
+                    key = data.getStringExtra(NewNote.KEY_ID);
+                    value = data.getStringExtra(NewNote.DATA_ID);
                     Log.d("LOG", "Back From UPDATE Activity --- " + data);
                     note = dataHandeler.getNewNoteObject();
                     note.setKey(key);
@@ -150,7 +155,7 @@ public class first_act extends AppCompatActivity implements ListView.OnItemClick
 
     private void Refresh() {
         noteMap = dataHandeler.getAllNotes();
-        adapter = new ArrayAdapter(getBaseContext(), R.layout.list_lay, new ArrayList(noteMap.values()));
+        adapter = new ArrayAdapter<>(getBaseContext(), R.layout.list_lay, new ArrayList(noteMap.values()));
         noteListKeys.clear();
         noteListVals.clear();
         noteListVals = new ArrayList<>(noteMap.values());
@@ -161,7 +166,6 @@ public class first_act extends AppCompatActivity implements ListView.OnItemClick
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
         currentNote = ((AdapterView.AdapterContextMenuInfo) menuInfo).id;
         menu.add(0, DELETE_ID, 0, "Delete");
         menu.add(0, SHARE_ID, 1, "Share");
@@ -173,7 +177,7 @@ public class first_act extends AppCompatActivity implements ListView.OnItemClick
             case DELETE_ID:
                 int location = (int) currentNote;
                 Log.d("LOG", "Item to delete - KEY - " + noteListKeys.get(location) + " - VAL - " + noteListVals.get(location));
-                noteClass deleteNote = new noteClass();
+                Note deleteNote = new Note();
                 deleteNote.setData(noteListVals.get(location));
                 deleteNote.setKey(noteListKeys.get(location));
                 dataHandeler.deleteNote(deleteNote);

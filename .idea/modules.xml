@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/V_Note/V_Note.iml" filepath="$PROJECT_DIR$/V_Note/V_Note.iml" />
-      <module fileurl="file://$PROJECT_DIR$/testSubject2.iml" filepath="$PROJECT_DIR$/testSubject2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/V_Note.iml" filepath="$PROJECT_DIR$/V_Note.iml" />
+      <module fileurl="file://$PROJECT_DIR$/V_Note/V_Note-V_Note.iml" filepath="$PROJECT_DIR$/V_Note/V_Note-V_Note.iml" />
     </modules>
   </component>
 </project>

@@ -1,4 +1,4 @@
-package com.example.afsal.testsubject2;
+package com.example.afsal.notes.views;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +8,9 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class create_new_note extends AppCompatActivity {
+import com.example.afsal.notes.R;
+
+public class NewNote extends AppCompatActivity {
 
     public static final String TO_SAVE = "TEXT_TO_SAVE";
     public static final String DATA_ID = "1001";
@@ -19,9 +21,9 @@ public class create_new_note extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_note);
-        key = getIntent().getStringExtra(first_act.KEY);
-        dataVal = getIntent().getStringExtra(first_act.DATA);
-        EditText editText = (EditText) findViewById(R.id.input_panel);
+        key = getIntent().getStringExtra(MainActivity.KEY);
+        dataVal = getIntent().getStringExtra(MainActivity.DATA);
+        EditText editText = findViewById(R.id.input_panel);
         editText.setText(dataVal);
     }
 
@@ -43,7 +45,7 @@ public class create_new_note extends AppCompatActivity {
     }
 
     private void saveNote() {
-        EditText editText = (EditText) findViewById(R.id.input_panel);
+        EditText editText = findViewById(R.id.input_panel);
         if (editText.getText().length() > 1) {
             Intent output = new Intent();
             output.putExtra(DATA_ID, editText.getText().toString());

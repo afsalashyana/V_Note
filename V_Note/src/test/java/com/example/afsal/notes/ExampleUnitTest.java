@@ -1,4 +1,4 @@
-package com.example.afsal.testsubject2;
+package com.example.afsal.notes;
 
 import org.junit.Test;
 

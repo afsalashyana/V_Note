@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.afsal.testsubject2">
+    package="com.example.afsal.notes">
 
     <application
         android:allowBackup="true"
@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".first_act">
+        <activity android:name="com.example.afsal.notes.views.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,12 +23,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".create_new_note"
-            android:parentActivityName=".first_act" />
+            android:name="com.example.afsal.notes.views.NewNote"
+            android:parentActivityName="com.example.afsal.notes.views.MainActivity" />
         <activity
-            android:name=".SettingsActivity"
+            android:name="com.example.afsal.notes.pref.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".first_act" />
+            android:parentActivityName="com.example.afsal.notes.views.MainActivity" />
     </application>
 
 </manifest>

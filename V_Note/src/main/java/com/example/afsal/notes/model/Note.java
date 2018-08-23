@@ -1,9 +1,9 @@
-package com.example.afsal.testsubject2;
+package com.example.afsal.notes.model;
 
 
-public class noteClass {
-    String key;
-    String data;
+public class Note {
+    private String key;
+    private String data;
 
     public String getKey() {
         return key;
